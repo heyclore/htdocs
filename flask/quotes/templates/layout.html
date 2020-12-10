@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+      {% block title %}{% endblock %}
+    </title>
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/foo.js') }}"></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bar.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar foo">
+        <div class="container m-1">
+
+          <!-- Left Side Of Navbar -->
+          <div class="navbar-nav-scroll">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('home') }}">Random Quotes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/timeline' %}active{% endif %}" href="{{ url_for('timeline') }}">Timeline</a>
+              </li>
+            </ul>
+          </div>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- Authentication Links -->
+              {% if current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('post_user', username=current_user.username) }}">{{ current_user.username }}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">logout</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/login' %}active{% endif %}" href="{{ url_for('login') }}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/register' %}active{% endif %}" href="{{ url_for('register') }}">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <main class="py-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock%}
+      </main>
+    </div>
+  </body>
+</html>

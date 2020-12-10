@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block title %}{{ data['title'] }}{% endblock %}
+{% block content %}
+<div class="container mt-2">
+  <div class="col-md-8 p-3 foo mx-auto rounded-lg text-white">
+    <h3 class="text-center font-weight-bold">{{ data['legend'] }}</h3>
+    <form action="{% if request.path == '/timeline' %}{{ url_for('timeline') }}{% else %}{{ url_for('update_post',post_id=post_id) }}{% endif %}" method="POST">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        {{ form.quotes.label() }}
+        {% if form.quotes.errors %}
+            {{ form.quotes(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.quotes.errors %}
+                <span>{{ error }}</span>
+              {% endfor%}
+            </div>
+        {% else %}
+          <div class="form-group">
+            {{ form.quotes(class="form-control") }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.author.label() }}
+        {% if form.author.errors %}
+            {{ form.author(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.author.errors %}
+                <span>{{ error }}</span>
+              {% endfor%}
+            </div>
+        {% else %}
+          <div class="form-group">
+            {{ form.author(class="form-control") }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="col text-center">
+        {{ form.submit(class="btn btn-light bar justify btn-lg") }}
+      </div>
+    </form>
+  </div>
+</div>
+
+
+{% if request.path == '/timeline' %}
+  <div class="container mt-4">
+    <div class="col-md-8 p-3 foo mx-auto rounded-lg text-white">
+      {% if data['posts'].items %}
+        {% for post in data['posts'].items %}
+          <div class="mb-2">
+            <a href="{{ url_for('post_user', username=post.author.username) }}" class="foofoo font-weight-bold d-inline text-white">{{ post.author.username }}</a>
+            {{ moment(post.date_posted).fromNow() }}
+            {% if post.author == current_user %}
+              <div class="d-inline float-right ml-1">
+                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                  <button type="submit" class="bar btn btn-sm bg-white">delete</button>
+                </form>
+              </div>
+              <div class="d-inline float-right ml-1">
+                <a type="submit" href="{{ url_for('update_post', post_id=post.id) }}" class="bar btn btn-sm bg-white">edit</a>
+              </div>
+            {%endif%}
+            <h6 class="font-italic">“{{ post.quotes }}” - {{ post.writer }}</h6>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col d-flex justify-content-center mt-4">there's nothing</div>
+      {% endif %}
+      <div class="col d-flex justify-content-center mt-4">
+        {% for page_num in data['posts'].iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+            {% if data['posts'].page == page_num %}
+              <a href="#" class="bar btn btn-sm bg-white ml-1">{{ page_num }}</a>
+            {% else %}
+                <a href="{{ url_for('timeline', page=page_num) }}" class="bar btn btn-sm bg-white ml-1">{{ page_num }}</a>
+            {%endif%}
+          {% else %}
+              <a href="#" class="bar btn btn-sm bg-white ml-1">...</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
