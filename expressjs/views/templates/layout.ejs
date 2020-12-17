@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <!-- Scripts -->
+    <script src="js/app.js" defer></script>
+    <script src="js/foo.js"></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/bar.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar foo">
+        <div class="container m-1">
+
+          <!-- Left Side Of Navbar -->
+          <div class="navbar-nav-scroll">
+            <ul class="navbar-nav bd-navbar-nav flex-row">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Random Quotes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/timeline">Timeline</a>
+              </li>
+            </ul>
+          </div>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- Authentication Links -->
+
+              <% if ( user ) { %>
+              <li class="nav-item">
+                <a class="nav-link " href="#"><%= user.username %></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/logout">Logout</a>
+              </li>
+              <% } else { %>
+              <li class="nav-item">
+                <a class="nav-link " href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/register">Register</a>
+              </li>
+              <% } %>
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <main class="py-4">
+        <%- body %>
+      </main>
+    </div>
+  </body>
+</html>
