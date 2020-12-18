@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const Router = require('express');
 const quoteQontroller = require('../controllers/quotesQontroller');
 const { requireAuth, checkUser } = require('../middleware/authMiddleware');
 
@@ -7,6 +7,8 @@ const router = Router();
 
 router.get('*', checkUser);
 router.get('/', quoteQontroller.home);
+router.get('/ajax', quoteQontroller.ajax);
+router.get('/post/:username', quoteQontroller.post);
 router.get('/timeline', quoteQontroller.timeline_get);
 router.post('/timeline', requireAuth, quoteQontroller.timeline_post);
 

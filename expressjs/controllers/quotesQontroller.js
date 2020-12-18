@@ -1,5 +1,6 @@
 const User = require('../models/dbHelper');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 const { requireAuth, checkUser, currentUser } = require('../middleware/authMiddleware');
 
 
@@ -16,12 +17,41 @@ const createToken = (id) => {
 
 
 module.exports.home = (req, res) => {
+  User.random()
+    .then(user => {
+      random = user[Math.floor(Math.random() * user.length)];
+      random.link = '/post/'+random.user;
+      random.title = 'Home';
+      random.username = random.user;
+      delete random.user;
+      res.render('home', random);
+    });
+}
+
+module.exports.ajax = (req, res) => {
+  User.random()
+    .then(user => {
+      random = user[Math.floor(Math.random() * user.length)];
+      random.link = '/post/'+random.user;
+      res.send(random);
+    });
+}
+
+module.exports.post = (req, res) => {
   const data = {
     title:'Home',
     author:'',
     quotes:'',
+    username: req.params.username,
+    moment:moment,
+    currentUser:currentUser,
+    cookies: req.cookies.login,
   };
-  res.render('home', data);
+  User.quotes_post(req.params.username)
+    .then(user => {
+      data.query = user;
+      res.render('post', data);
+    })
 }
 
 module.exports.timeline_get = (req,res) => {
@@ -29,8 +59,15 @@ module.exports.timeline_get = (req,res) => {
     title:'Timeline',
     author:'',
     quotes:'',
+    moment:moment,
+    currentUser:currentUser,
+    cookies: req.cookies.login,
   };
-  res.render('timeline', data);
+  User.quotes()
+    .then(user => {
+      data.query = user;
+      res.render('timeline', data);
+    })
 };
 
 module.exports.timeline_post = (req,res,next) => {
@@ -42,7 +79,6 @@ module.exports.timeline_post = (req,res,next) => {
   };
   const { author, quotes} = req.body
   if(!author || !quotes){
-    console.log('foo')
     return res.render('timeline', data);
   }else{
     const user = currentUser(req.cookies.login);
@@ -51,21 +87,19 @@ module.exports.timeline_post = (req,res,next) => {
         return res.redirect('timeline');
       })
       .catch(error => {
-        console.log('foobar')
         return res.redirect('login');
       });
   }
 };
 
 
-
-
+///////auth///////
 
 module.exports.register_get = (req,res) => {
   const data = {
     'title': 'Register',
     username:'',
-    email:''
+    email:'',
   };
   res.render('register', data);
 };
@@ -86,7 +120,7 @@ module.exports.register_post = (req,res) => {
         return res.redirect('timeline');
       })
       .catch(error => {
-        return res.redirect('register', req.body);
+        res.status(500).render('register', data);
       });
   }
 };

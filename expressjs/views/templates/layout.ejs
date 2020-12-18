@@ -13,8 +13,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="css/app.css" rel="stylesheet">
-    <link href="css/bar.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/bar.css" rel="stylesheet">
   </head>
   <body>
     <div id="app">
@@ -25,10 +25,10 @@
           <div class="navbar-nav-scroll">
             <ul class="navbar-nav bd-navbar-nav flex-row">
               <li class="nav-item">
-                <a class="nav-link" href="/">Random Quotes</a>
+                <a class="nav-link <%= title === 'Home' ? 'active' : '' %>" href="/">Random Quotes</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="/timeline">Timeline</a>
+                <a class="nav-link <%= title === 'Timeline' ? 'active' : '' %>" href="/timeline">Timeline</a>
               </li>
             </ul>
           </div>
@@ -40,7 +40,7 @@
 
               <% if ( user ) { %>
               <li class="nav-item">
-                <a class="nav-link " href="#"><%= user.username %></a>
+                <a class="nav-link active" href="<%= user.user_id %>"><%= user.username %></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link " href="/logout">Logout</a>
