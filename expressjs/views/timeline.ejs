@@ -25,12 +25,12 @@
       <% if ( user ) { %>
         <% if(currentUser(cookies).id == x.user_id) { %>
           <div class="d-inline float-right ml-1">
-            <form action="/post/<%= x.id %>/delete" method="post">
+            <form action="/post/<%= x.username %>/delete/<%= x.id %>" method="post">
                 <button type="submit" class="bar btn btn-sm bg-white">delete</button>
             </form>
           </div>
           <div class="d-inline float-right ml-1">
-              <a type="submit" href="/post/<%= x.id %>/update" class="bar btn btn-sm bg-white">edit</a>
+              <a type="submit" href="/post/<%= x.username%>/edit/<%= x.id %>" class="bar btn btn-sm bg-white">edit</a>
           </div>
         <% } %>
       <% } %>

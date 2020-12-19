@@ -9,6 +9,9 @@ router.get('*', checkUser);
 router.get('/', quoteQontroller.home);
 router.get('/ajax', quoteQontroller.ajax);
 router.get('/post/:username', quoteQontroller.post);
+router.post('/post/:username/delete/:postId', requireAuth, quoteQontroller.timeline_post_delete);
+router.get('/post/:username/edit/:postId', requireAuth, quoteQontroller.timeline_post_edit_get);
+router.post('/post/:username/edit/:postId', requireAuth, quoteQontroller.timeline_post_edit_post);
 router.get('/timeline', quoteQontroller.timeline_get);
 router.post('/timeline', requireAuth, quoteQontroller.timeline_post);
 

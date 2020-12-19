@@ -13,9 +13,6 @@ const createToken = (id) => {
 
 
 
-
-
-
 module.exports.home = (req, res) => {
   User.random()
     .then(user => {
@@ -66,20 +63,27 @@ module.exports.timeline_get = (req,res) => {
   User.quotes()
     .then(user => {
       data.query = user;
-      res.render('timeline', data);
+      return res.render('timeline', data);
     })
 };
 
-module.exports.timeline_post = (req,res,next) => {
+module.exports.timeline_post = (req,res) => {
   const data = {
     title:'Timeline',
     user: currentUser(req.cookies.login),
+    cookies: req.cookies.login,
+    currentUser:currentUser,
+    moment:moment,
     author: req.body.author,
     quotes: req.body.quotes,
   };
   const { author, quotes} = req.body
   if(!author || !quotes){
-    return res.render('timeline', data);
+    User.quotes()
+      .then(user => {
+        data.query = user;
+        return res.render('timeline', data);
+      })
   }else{
     const user = currentUser(req.cookies.login);
     User.post({author, quotes, user_id:data.user.id })
@@ -92,6 +96,65 @@ module.exports.timeline_post = (req,res,next) => {
   }
 };
 
+module.exports.timeline_post_delete = (req,res) => {
+  const data = {
+    user: currentUser(req.cookies.login),
+    username: req.params.username,
+    post_id: req.params.postId,
+  };
+  User.post_delete(data)
+    .then(user => {
+      if(user == 1){
+        res.redirect('/timeline');
+      }
+    })
+    .catch(error => {
+      return res.redirect('login');
+    });
+};
+
+
+module.exports.timeline_post_edit_get = (req,res) => {
+  const data = {
+    title:'Update Post',
+    user: currentUser(req.cookies.login),
+    username: req.params.username,
+    post_id: req.params.postId,
+  };
+  User.post_edit(data)
+    .then(user => {
+      data.author = user.author;
+      data.quotes = user.quotes;
+      res.render('post_edit',data);
+    })
+    .catch(error => {
+      return res.redirect('login');
+    });
+};
+
+module.exports.timeline_post_edit_post = (req,res) => {
+  const data = {
+    title:'Update Post',
+    user: currentUser(req.cookies.login),
+    username: req.params.username,
+    quotes: req.body.quotes,
+    author: req.body.author,
+    post_id: req.params.postId,
+  };
+  const { author, quotes} = req.body
+  if(!author || !quotes){
+    data.query = data.user;
+    return res.render('post_edit',data);
+  }else{
+    User.post_update(data)
+      .then(user => {
+        return res.redirect('/timeline');
+      })
+      .catch(error => {
+        return res.redirect('login');
+      });
+  }
+};
 
 ///////auth///////
 

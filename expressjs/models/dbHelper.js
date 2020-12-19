@@ -45,6 +45,24 @@ module.exports.quotes_post = async (username) => {
 }
 
 
+module.exports.post_delete = async (data) => {
+  const id = parseInt(data.post_id);
+  return db('post').where({id:id}, {user_id:data.user.id}).del();
+}
+
+
+module.exports.post_edit = async (data) => {
+  const id = parseInt(data.post_id);
+  return db('post').where({id:id}, {user_id:data.user.id}).first();
+  //return db('user').where(id).first();
+}
+
+module.exports.post_update = async (data) => {
+  const id = parseInt(data.post_id);
+  return db('post').where({id:id}, {user_id:data.user.id}).first().update({author:data.author,quotes:data.quotes});
+}
+///////auth///////
+
 
 module.exports.register = async (user,res) => {
   const email = await db('user').where({email:user.email}).first();
