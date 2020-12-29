@@ -13,3 +13,20 @@
  *= require_tree .
  *= require_self
  */
+@import "bootstrap/scss/bootstrap";
+
+.foo {
+  background-color: #7952b3;
+}
+
+.bar {
+  color: #7952b3;
+}
+
+.foobar {
+  border: 3px solid #7952B2;
+}
+
+.foofoo {
+  font-size: 20px;
+}
