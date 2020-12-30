@@ -39,6 +39,10 @@
                 <!-- <a class="nav-link" href="{{ url_for('logout') }}">logout</a> -->
                 <%= link_to 'Logout', destroy_user_session_path, method: :delete, class:'nav-link' %>
               </li>
+              <li class="nav-item">
+                <!-- <a class="nav-link" href="{{ url_for('logout') }}">logout</a> -->
+                <%= link_to 'edit', edit_user_password_path, class:'nav-link' %>
+              </li>
               <% else %>
               <li class="nav-item">
                 <!-- <a class="nav-link {% if request.path == '/login' %}active{% endif %}" href="{{ url_for('login') }}">Login</a> -->
@@ -53,8 +57,9 @@
           </div>
         </div>
       </nav>
+      <div class="py-4">
+        <%= yield %>
+      </div>
     </div>
-
-    <%= yield %>
   </body>
 </html>
