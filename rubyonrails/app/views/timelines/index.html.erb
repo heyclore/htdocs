@@ -25,16 +25,7 @@
     </div>
     <% end %>
     <div class="col d-flex justify-content-center mt-4">
-      {% for page_num in data['posts'].iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-        {% if page_num %}
-          {% if data['posts'].page == page_num %}
-            <a href="#" class="bar btn btn-sm bg-white ml-1">{{ page_num }}</a>
-          {% else %}
-              <a href="{{ url_for('timeline', page=page_num) }}" class="bar btn btn-sm bg-white ml-1">{{ page_num }}</a>
-          {%endif%}
-        {% else %}
-            <a href="#" class="bar btn btn-sm bg-white ml-1">...</a>
-        {% endif %}
+      <%= will_paginate @timelines %>
     </div>
   </div>
 </div>

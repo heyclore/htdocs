@@ -5,7 +5,7 @@ class TimelinesController < ApplicationController
   # GET /timelines
   # GET /timelines.json
   def index
-    @timelines = Timeline.all
+    @timelines = Timeline.all.paginate(page: params[:page], per_page: 1)
     @timeline = Timeline.new
   end
 
