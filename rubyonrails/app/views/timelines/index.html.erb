@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Timelines</h1>
+
+<%= render 'form', timeline: @timeline %>
+
+<%= link_to 'Back', timelines_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Quotes</th>
+      <th>Author</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @timelines.each do |timeline| %>
+      <tr>
+        <td><%= timeline.quotes %></td>
+        <td><%= timeline.author %></td>
+        <td><%= timeline.user_id %></td>
+        <td><%= link_to 'Show', timeline %></td>
+        <td><%= link_to 'Edit', edit_timeline_path(timeline) %></td>
+        <td><%= link_to 'Destroy', timeline, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Timeline', new_timeline_path %>
