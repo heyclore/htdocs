@@ -1,5 +1,5 @@
 <%= form_with(model: timeline) do |form| %>
-  <% if timeline.errors.any? %>
+  <!-- <% if timeline.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(timeline.errors.count, "error") %> prohibited this timeline from being saved:</h2>
 
@@ -9,19 +9,23 @@
         <% end %>
       </ul>
     </div>
-  <% end %>
+  <% end %> -->
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :quotes %>
-    <%= form.text_field :quotes %>
+    <div class="form-group">
+      <%= form.text_field :quotes, class:'form-control' %>
+    </div>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= form.label :author %>
-    <%= form.text_field :author %>
+    <div class="form-group">
+      <%= form.text_field :author, class:'form-control' %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="col text-center">
+    <%= form.submit 'Submit', class:'btn btn-light bar justify btn-lg' %>
   </div>
 <% end %>

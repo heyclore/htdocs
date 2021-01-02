@@ -1,35 +1,40 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Timelines</h1>
-
-<%= render 'form', timeline: @timeline %>
-
-<%= link_to 'Back', timelines_path %>
-
-<table>
-  <thead>
-    <tr>
-      <th>Quotes</th>
-      <th>Author</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<div class="container mt-2">
+  <div class="col-md-8 p-3 foo mx-auto rounded-lg text-white">
+    <h3 class="text-center font-weight-bold">Post Something</h3>
+    <%= render 'form', timeline: @timeline %>
+  </div>
+</div>
+<div class="container mt-4">
+  <div class="col-md-8 p-3 foo mx-auto rounded-lg text-white">
     <% @timelines.each do |timeline| %>
-      <tr>
-        <td><%= timeline.quotes %></td>
-        <td><%= timeline.author %></td>
-        <td><%= timeline.user_id %></td>
-        <td><%= link_to 'Show', timeline %></td>
-        <td><%= link_to 'Edit', edit_timeline_path(timeline) %></td>
-        <td><%= link_to 'Destroy', timeline, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <div class="mb-2">
+      <a href="#" class="foofoo font-weight-bold d-inline text-white"><%= timeline.user_id %></a>
+      <% if defined?(current_user.id) %>
+        <% if current_user.id == timeline.user_id %>
+        <div class="d-inline float-right ml-1">
+          <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+            <%= link_to 'Delete', timeline, method: :delete, class:"bar btn btn-sm bg-white", data: { confirm: 'Are you sure?' } %>
+          </form>
+        </div>
+        <div class="d-inline float-right ml-1">
+          <%= link_to 'Edit', edit_timeline_path(timeline), class:'bar btn btn-sm bg-white' %>
+        </div>
+        <% end %>
+      <% end %>
+      <h6 class="font-italic">“<%= timeline.quotes %>” - <%= timeline.author %></h6>
+    </div>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Timeline', new_timeline_path %>
+    <div class="col d-flex justify-content-center mt-4">
+      {% for page_num in data['posts'].iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+          {% if data['posts'].page == page_num %}
+            <a href="#" class="bar btn btn-sm bg-white ml-1">{{ page_num }}</a>
+          {% else %}
+              <a href="{{ url_for('timeline', page=page_num) }}" class="bar btn btn-sm bg-white ml-1">{{ page_num }}</a>
+          {%endif%}
+        {% else %}
+            <a href="#" class="bar btn btn-sm bg-white ml-1">...</a>
+        {% endif %}
+    </div>
+  </div>
+</div>
