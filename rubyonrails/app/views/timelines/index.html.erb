@@ -8,7 +8,7 @@
   <div class="col-md-8 p-3 foo mx-auto rounded-lg text-white">
     <% @timelines.each do |timeline| %>
     <div class="mb-2">
-      <a href="#" class="foofoo font-weight-bold d-inline text-white"><%= timeline.user_id %></a>
+      <a href="#" class="foofoo font-weight-bold d-inline text-white"><%= timeline.user.username %></a>
       <% if defined?(current_user.id) %>
         <% if current_user.id == timeline.user_id %>
         <div class="d-inline float-right ml-1">
