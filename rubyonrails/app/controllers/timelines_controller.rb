@@ -2,6 +2,7 @@ class TimelinesController < ApplicationController
   before_action :set_timeline, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :edit, :update, :destroy]
 
+
   # GET /timelines
   # GET /timelines.json
   def index
@@ -21,6 +22,9 @@ class TimelinesController < ApplicationController
 
   # GET /timelines/1/edit
   def edit
+    if current_user.id != @timeline.user_id
+      redirect_to index
+    end
   end
 
   # POST /timelines
@@ -35,7 +39,7 @@ class TimelinesController < ApplicationController
         format.html { redirect_to @timeline, notice: 'Timeline was successfully created.' }
         format.json { render :show, status: :created, location: @timeline }
       else
-        @timelines = Timeline.all
+        @timelines = Timeline.order(created_at: :desc).paginate(page: params[:page], per_page: 5)
         format.html { render :index }
         format.json { render json: @timelines.errors, status: :unprocessable_entity }
       end

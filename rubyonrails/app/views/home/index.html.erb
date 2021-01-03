@@ -5,7 +5,7 @@
         <div class="card-header bar p-5 font-italic">“<span id="quote"><%= @quote.quotes %></span>”</div>
         <div class="card-body foo text-white">
           <p id="author" class="text-left d-inline"><%= @quote.author %></p>
-          <span class="float-right">Added By: <a id="user" class="text-white font-weight-bold" href="#"><%= @quote.user.username %></a></span>
+          <span class="float-right">Added By: <span id="user" class="text-white font-weight-bold"><%= @quote.user.username %></span></span>
         </div>
       </div>
       <div class="text-center">
